@@ -1,0 +1,70 @@
+# Name
+name: Frontend CI flow
+
+# Triggers for the workflow
+on:
+# Manual trigger 
+  workflow_dispatch:
+
+  # Automatic trigger on pull request events on the main branch
+  pull_request:
+    branches:
+      - main
+
+# Jobs defined in the workflow
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+      - name: Run lint
+        run: cd starter/frontend && npm run lint  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+      - name: Run test
+        run: cd starter/frontend && npm run test
+  build:
+    needs: [lint,test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Node.js 
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: cd starter/frontend && npm ci
+      - name: Build the application
+        run: cd starter/frontend && npm run test
