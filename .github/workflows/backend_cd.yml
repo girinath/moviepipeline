@@ -1,4 +1,4 @@
-# Workflow name
+# Name
 name: Backend Continuous Deployment
 
 # Triggers for the workflow

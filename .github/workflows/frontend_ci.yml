@@ -1,7 +1,7 @@
 # Name
-name: Frontend CI flow
+name: Frontend Continuous Integration
 
-# Triggers for the workflow
+# Triggers
 on:
 # Manual trigger 
   workflow_dispatch:
